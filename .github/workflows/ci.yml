@@ -11,7 +11,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
-    # if: ${{ always() }}
+    if: ${{ always() }}
     needs: [build]
     env:
       # WEBHOOK: https://discord.com/api/webhooks/1107328418640568370/KOm88HM1rPIJfBhQ7GP1RH_KZ4ke_4w0h1ZfKWNxTfbj32wP9QgeKFcKvm30Rpha1Lyv/github
@@ -20,7 +20,7 @@ jobs:
     steps:
     - name: Test Success
       uses: rjstone/discord-webhook-notify@v1
-      if: success()
+      if: ${{ success() }}
       with:
           severity: info
           details: Build Succeeded!
@@ -28,14 +28,14 @@ jobs:
           avatarUrl: ${{ env.AVATAR_URL }}
     - name: Test Failure
       uses: rjstone/discord-webhook-notify@v1
-      if: failure()
+      if: ${{ failure() }}
       with:
           severity: error
           details: Build Failed!
           webhookUrl: ${{ env.WEBHOOK }}
     - name: Test Cancelled
       uses: rjstone/discord-webhook-notify@v1
-      if: cancelled()
+      if: ${{ cancelled() }}
       with:
           severity: warn
           details: Build Cancelled!
