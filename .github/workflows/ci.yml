@@ -6,8 +6,12 @@ jobs:
     steps:
     - name: Run
       run: |
-        echo "Completed 'build' job, but triggering failure"
-        exit 1
+        echo "Run 'build' job"
+        
+    # - name: Complete with failure
+    #   run: |
+    #     echo "Completed 'build' job, but triggering failure"
+    #     exit 1
 
   notify:
     runs-on: ubuntu-latest
