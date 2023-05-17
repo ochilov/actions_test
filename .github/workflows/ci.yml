@@ -1,0 +1,44 @@
+name: Chat app
+on: [push]
+jobs:
+  build:
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.1'
+        bundler-cache: true
+    - name: Run
+      run: |
+        echo "Completed 'build' job, but triggering failure"
+        exit 1
+  
+  notify:
+    if: ${{ always() }}
+    needs: [build]
+    env:
+      WEBHOOK: https://discord.com/api/webhooks/1107328418640568370/KOm88HM1rPIJfBhQ7GP1RH_KZ4ke_4w0h1ZfKWNxTfbj32wP9QgeKFcKvm30Rpha1Lyv/github
+      AVATAR_URL: https://avatars.githubusercontent.com/u/29285980?s=400&u=e6644c135c541ef80b39bea82b09ffef175a2a52&v=4
+    steps:
+    - name: Test Success
+      uses: rjstone/discord-webhook-notify@v1
+      if: success()
+      with:
+          severity: info
+          details: Test Succeeded!
+          webhookUrl: ${{ env.WEBHOOK }}
+          avatarUrl: ${{ env.AVATAR_URL }}
+    - name: Test Failure
+      uses: rjstone/discord-webhook-notify@v1
+      if: failure()
+      with:
+          severity: error
+          details: Test Failed!
+          webhookUrl: ${{ env.WEBHOOK }}
+    - name: Test Cancelled
+      uses: rjstone/discord-webhook-notify@v1
+      if: cancelled()
+      with:
+          severity: warn
+          details: Test Cancelled!
+          webhookUrl: ${{ env.WEBHOOK }}
