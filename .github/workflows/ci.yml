@@ -20,7 +20,8 @@ jobs:
     steps:
     - name: Test Success
       uses: rjstone/discord-webhook-notify@v1
-      if: ${{ success() }}
+      # if: ${{ success() }}
+      if: ${{ contains(needs.*.result, 'success') }}
       with:
           severity: info
           details: Build Succeeded!
@@ -28,14 +29,16 @@ jobs:
           avatarUrl: ${{ env.AVATAR_URL }}
     - name: Test Failure
       uses: rjstone/discord-webhook-notify@v1
-      if: ${{ failure() }}
+      # if: ${{ failure() }}
+      if: ${{ contains(needs.*.result, 'failure') }}
       with:
           severity: error
           details: Build Failed!
           webhookUrl: ${{ env.WEBHOOK }}
     - name: Test Cancelled
       uses: rjstone/discord-webhook-notify@v1
-      if: ${{ cancelled() }}
+      # if: ${{ cancelled() }}
+      if: ${{ contains(needs.*.result, 'cancelled') }}
       with:
           severity: warn
           details: Build Cancelled!
