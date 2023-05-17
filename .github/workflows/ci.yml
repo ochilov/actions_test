@@ -4,11 +4,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.1'
-        bundler-cache: true
     - name: Run
       run: |
         echo "Completed 'build' job, but triggering failure"
@@ -19,7 +14,8 @@ jobs:
     if: ${{ always() }}
     needs: [build]
     env:
-      WEBHOOK: https://discord.com/api/webhooks/1107328418640568370/KOm88HM1rPIJfBhQ7GP1RH_KZ4ke_4w0h1ZfKWNxTfbj32wP9QgeKFcKvm30Rpha1Lyv/github
+      # WEBHOOK: https://discord.com/api/webhooks/1107328418640568370/KOm88HM1rPIJfBhQ7GP1RH_KZ4ke_4w0h1ZfKWNxTfbj32wP9QgeKFcKvm30Rpha1Lyv/github
+      WEBHOOK: ${{ secrets.DISCORD }}
       AVATAR_URL: https://avatars.githubusercontent.com/u/29285980?s=400&u=e6644c135c541ef80b39bea82b09ffef175a2a52&v=4
     steps:
     - name: Test Success
